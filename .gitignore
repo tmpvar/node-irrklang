@@ -1,2 +1,4 @@
-node-irrklang.node
+lib/node-irrklang.node
+build/*
+gmon.out
 
