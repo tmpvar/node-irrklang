@@ -47,7 +47,7 @@ public:
     s_ct->InstanceTemplate()->SetInternalFieldCount(1);
     s_ct->SetClassName(String::NewSymbol("Irrkl"));
 
-    NODE_SET_PROTOTYPE_METHOD(s_ct, "bell", Bell);
+    NODE_SET_PROTOTYPE_METHOD(s_ct, "play", Play);
 
     target->Set(String::NewSymbol("Irrkl"),
                 s_ct->GetFunction());
@@ -70,7 +70,7 @@ public:
     return args.This();
   }
 
-  static Handle<Value> Bell(const Arguments& args)
+  static Handle<Value> Play(const Arguments& args)
   {
     HandleScope scope;
     Irrkl* hw = ObjectWrap::Unwrap<Irrkl>(args.This());
@@ -78,7 +78,7 @@ public:
     ISoundEngine* engine = createIrrKlangDevice();
     //if (!engine)
     //   return 0; // error starting up the engine
-    engine->play2D("../../media/bell.wav", true);
+    engine->play2D(args[0], true);
     engine->drop(); // delete engine
     return scope.Close(engine);
   }
