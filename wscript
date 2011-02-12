@@ -7,6 +7,8 @@ import sys, os
 srcdir = "."
 blddir = "build"
 VERSION = "0.0.1"
+srcdir = '.'
+irrklangdir = abspath(srcdir) + "/deps/irrKlang"
 
 def set_options(opt):
   opt.tool_options("compiler_cxx")
@@ -16,10 +18,7 @@ def configure(conf):
   conf.check_tool("compiler_cxx")
   conf.check_tool("compiler_cc")
   conf.check_tool("node_addon")
-  
-  
   conf.check_tool("irrklang")
-
 
 def clean(ctx): 
   if exists("lib/node-irrklang.node"): unlink("lib/node-irrklang.node")
@@ -33,11 +32,13 @@ def clean(ctx):
   
 
 def build(bld):
-  node_ogl = bld.new_task_gen("cxx", "shlib", "node_addon")
-  node_ogl.source = bld.glob("src/*.cc")
-  node_ogl.name = "node-irrklang"
-  node_ogl.target = "node-irrklang"
-  node_ogl.uselib = ["irrklang"]
+  node_irrklang = bld.new_task_gen("cxx", "shlib", "node_addon")
+  node_irrklang.source = bld.glob("src/*.cc")
+  node_irrklang.name = "node-irrklang"
+  node_irrklang.target = "node-irrklang"
+  node_irrklang.uselib = ["irrklang"]
+  node_irrklang.includes = [irrklangdir + '/include']
+  node_irrklang.linkflags = [irrklangdir + "/bin/macosx-gcc/libirrklang.dylib"]
   bld.add_post_fun(copynode)
 
 def copynode(ctx):
