@@ -17,7 +17,7 @@ class irrKlang {
       Local<FunctionTemplate> t = FunctionTemplate::New(New);
     }
 };
-/*
+
 
 Handle<Value> play(const Arguments& args) {
   HandleScope scope;
@@ -76,11 +76,14 @@ public:
     Irrkl* hw = ObjectWrap::Unwrap<Irrkl>(args.This());
     hw->m_count++;
     ISoundEngine* engine = createIrrKlangDevice();
-    //if (!engine)
-    //   return 0; // error starting up the engine
-    engine->play2D(args[0], true);
+    if (!engine)
+      return Undefined(); // error starting up the engine
+      
+    String::AsciiValue filename(args[0]->ToString());
+
+    engine->play2D(*filename, true);
     engine->drop(); // delete engine
-    return scope.Close(engine);
+    return Undefined();
   }
 
 };
