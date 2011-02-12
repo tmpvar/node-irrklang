@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSharp.04.OverrideFileAccess_vs2005", "CSharp.04.OverrideFileAccess_vs2005.csproj", "{49444AE7-02F6-40C2-9348-D2F67448CC3B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49444AE7-02F6-40C2-9348-D2F67448CC3B}.Debug|Default.ActiveCfg = Debug|Any CPU
+		{49444AE7-02F6-40C2-9348-D2F67448CC3B}.Debug|Default.Build.0 = Debug|Any CPU
+		{49444AE7-02F6-40C2-9348-D2F67448CC3B}.Release|Default.ActiveCfg = Release|Any CPU
+		{49444AE7-02F6-40C2-9348-D2F67448CC3B}.Release|Default.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
