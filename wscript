@@ -19,27 +19,21 @@ def configure(conf):
   conf.check_tool("compiler_cc")
   conf.check_tool("node_addon")
   conf.check_tool("irrklang")
+  conf.env.append_value('LINKFLAGS', ['-framework','irrklang'])
 
 def clean(ctx): 
   if exists("lib/node-irrklang.node"): unlink("lib/node-irrklang.node")
   if exists("build"): rmtree("build")
 
-  # TODO: add support for more platforms..
-  buildpath = abspath("build/default")
-  cmd = "cd \"deps/glfw\" && PREFIX=%s make cocoa-clean"
-  if os.system(cmd % (buildpath)) != 0:
-    conf.fatal("Building glfw failed.")
-  
-
 def build(bld):
   node_irrklang = bld.new_task_gen("cxx", "shlib", "node_addon")
-  node_irrklang.cxxflags = ["-g", "-D_FILE_OFFSET_BITS=64", "-D_LARGEFILE_SOURCE", "-Wall"]
   node_irrklang.source = bld.glob("src/*.cc")
   node_irrklang.name = "node-irrklang"
   node_irrklang.target = "node-irrklang"
   node_irrklang.uselib = ["irrklang"]
   node_irrklang.includes = [irrklangdir + '/include']
   node_irrklang.linkflags = [irrklangdir + "/bin/macosx-gcc/libirrklang.dylib"]
+  
   bld.add_post_fun(copynode)
 
 def copynode(ctx):

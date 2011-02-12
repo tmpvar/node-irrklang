@@ -1,11 +1,15 @@
 #include <v8.h>
 #include <node.h>
-#include <irrKlang.h>
+#include <dlfcn.h>
+#include <iostream>
 
+#define IRRKLANG_STATIC
+#include <irrKlang.h>
 
 using namespace node;
 using namespace v8;
 using namespace irrklang;
+using namespace std;
 
 /*class irrKlang {
   pubic:
@@ -77,7 +81,12 @@ public:
 };
 
 Persistent<FunctionTemplate> irrKlang::s_ct;
-
 extern "C" void init (Handle<Object> target) {
+  #include <dlfcn.h>
+  //..
+  void *handle = dlopen("/Users/tmpvar/work/javascript/node-irrklang/deps/irrKlang/bin/macosx-gcc/libirrklang.dylib", RTLD_NOW | RTLD_GLOBAL);
+  if (handle == NULL) {
+    cout << "ERROR: " << dlerror() << "\n\n";
+  }
   irrKlang::Init(target);
 }

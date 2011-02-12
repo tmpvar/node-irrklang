@@ -1,4 +1,4 @@
-var irrKlang = require(__dirname + "/../build/default/node-irrklang").irrKlang,
+var irrKlang = require(__dirname + "/../lib/node-irrklang").irrKlang,
     player   = new irrKlang();
 
-console.log(player.play);
+console.log(player.play("monkey"));
