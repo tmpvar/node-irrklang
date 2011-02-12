@@ -11,23 +11,13 @@ using namespace v8;
 using namespace irrklang;
 using namespace std;
 
-/*class irrKlang {
-  pubic:
-    static void
-    Initialize (v8::Handle<v8::Object> target)
-    {
-      HandleScope scope;
-
-      Local<FunctionTemplate> t = FunctionTemplate::New(New);
-    }
-};*/
-
 class irrKlang: ObjectWrap
 {
 private:
   int m_count;
+  ISoundEngine* engine;
 public:
-
+  
   static Persistent<FunctionTemplate> s_ct;
   static void Init(Handle<Object> target)
   {
@@ -48,10 +38,17 @@ public:
   irrKlang() :
     m_count(0)
   {
+
+    // create the engine
+    this->engine = createIrrKlangDevice();
+    if (!this->engine) {
+      cout << "BORKED";
+    }
   }
 
   ~irrKlang()
   {
+    this->engine->drop();
   }
 
   static Handle<Value> New(const Arguments& args)
@@ -65,26 +62,26 @@ public:
   static Handle<Value> Play(const Arguments& args)
   {
     HandleScope scope;
-    irrKlang* hw = ObjectWrap::Unwrap<irrKlang>(args.This());
-    hw->m_count++;
-    ISoundEngine* engine = createIrrKlangDevice();
-    if (!engine)
-      return Undefined(); // error starting up the engine
-      
     String::AsciiValue filename(args[0]->ToString());
+    irrKlang* hw = ObjectWrap::Unwrap<irrKlang>(args.This());
+    ISound *clip = hw->engine->play2D(*filename, false, false, true);
 
-    engine->play2D(*filename, true);
-    engine->drop(); // delete engine
-    return Undefined();
+    if (clip == NULL) {
+      cout << "NO CLIP \n\n";
+      return Undefined();
+    }
+
+    clip->setVolume(1);
+
+    return args.This();
   }
 
 };
 
 Persistent<FunctionTemplate> irrKlang::s_ct;
 extern "C" void init (Handle<Object> target) {
-  #include <dlfcn.h>
-  //..
-  void *handle = dlopen("/Users/tmpvar/work/javascript/node-irrklang/deps/irrKlang/bin/macosx-gcc/libirrklang.dylib", RTLD_NOW | RTLD_GLOBAL);
+  void *handle = dlopen("libirrklang.dylib", RTLD_NOW | RTLD_GLOBAL);
+
   if (handle == NULL) {
     cout << "ERROR: " << dlerror() << "\n\n";
   }

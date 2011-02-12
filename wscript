@@ -18,8 +18,7 @@ def configure(conf):
   conf.check_tool("compiler_cxx")
   conf.check_tool("compiler_cc")
   conf.check_tool("node_addon")
-  conf.check_tool("irrklang")
-  conf.env.append_value('LINKFLAGS', ['-framework','irrklang'])
+
 
 def clean(ctx): 
   if exists("lib/node-irrklang.node"): unlink("lib/node-irrklang.node")
@@ -32,8 +31,8 @@ def build(bld):
   node_irrklang.target = "node-irrklang"
   node_irrklang.uselib = ["irrklang"]
   node_irrklang.includes = [irrklangdir + '/include']
-  node_irrklang.linkflags = [irrklangdir + "/bin/macosx-gcc/libirrklang.dylib"]
-  
+  node_irrklang.linkflags = [irrklangdir + "/bin/macosx-gcc/libirrklang.dylib", '-m32']
+  node_irrklang.cxxflags = ['-O2', '-m32']
   bld.add_post_fun(copynode)
 
 def copynode(ctx):
