@@ -1,0 +1,14 @@
+{
+  "name": "irrklang",
+  "description": "rough integration with irrKlang",
+  "version": "0.0.1",
+  "repository": "git://github.com//tmpvar/node-irrklang.git",
+  "author": "Elijah Insua <tmpvar@gmail.com> (http://tmpvar.com)",
+  "main": "lib/irrlklang",
+  "directories": {
+    "lib": "lib"
+  },
+  "engines": {
+    "node": "*"
+  }
+}

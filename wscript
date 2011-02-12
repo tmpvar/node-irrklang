@@ -7,8 +7,8 @@ import sys, os
 srcdir = "."
 blddir = "build"
 VERSION = "0.0.1"
-srcdir = '.'
-irrklangdir = abspath(srcdir) + "/deps/irrKlang"
+srcdir = abspath(srcdir)
+irrklangdir = srcdir + "/deps/irrKlang"
 
 def set_options(opt):
   opt.tool_options("compiler_cxx")
@@ -37,7 +37,11 @@ def build(bld):
 
 def copynode(ctx):
   if exists('build/default/node-irrklang.node'):
-    copy('build/default/node-irrklang.node','lib/node-irrklang.node')
+    print "Copying addon to lib directory"
+    copy('build/default/node-irrklang.node','lib/irrklang.node')
+
+  print "Setting up libirrklang"
+  os.system("install_name_tool -change /usr/local/lib/libirrklang.dylib %s/lib/libirrklang.dylib ./lib/irrklang.node" % srcdir)
 
 def test(tst):
   os.system("node test/sanity.js")
