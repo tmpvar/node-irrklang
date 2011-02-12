@@ -1,0 +1,1 @@
+console.log(require(__dirname + "/../build/default/node-irrklang"));
