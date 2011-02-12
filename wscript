@@ -33,6 +33,7 @@ def clean(ctx):
 
 def build(bld):
   node_irrklang = bld.new_task_gen("cxx", "shlib", "node_addon")
+  node_irrklang.cxxflags = ["-g", "-D_FILE_OFFSET_BITS=64", "-D_LARGEFILE_SOURCE", "-Wall"]
   node_irrklang.source = bld.glob("src/*.cc")
   node_irrklang.name = "node-irrklang"
   node_irrklang.target = "node-irrklang"

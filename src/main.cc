@@ -78,7 +78,7 @@ public:
     ISoundEngine* engine = createIrrKlangDevice();
     //if (!engine)
     //   return 0; // error starting up the engine
-    engine->play2D("../../media/getout.ogg", true);
+    engine->play2D("../../media/bell.wav", true);
     engine->drop(); // delete engine
     return scope.Close(engine);
   }
