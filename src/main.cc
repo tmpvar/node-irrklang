@@ -16,6 +16,7 @@ class irrKlang: ObjectWrap
 private:
   int m_count;
   ISoundEngine* engine;
+  float m_volume;
 public:
   
   static Persistent<FunctionTemplate> s_ct;
@@ -30,6 +31,7 @@ public:
     s_ct->SetClassName(String::NewSymbol("irrKlang"));
 
     NODE_SET_PROTOTYPE_METHOD(s_ct, "play", Play);
+    NODE_SET_PROTOTYPE_METHOD(s_ct, "setVolume", SetVolume);
 
     target->Set(String::NewSymbol("irrKlang"),
                 s_ct->GetFunction());
@@ -38,7 +40,7 @@ public:
   irrKlang() :
     m_count(0)
   {
-
+    this->m_volume = 1;
     // create the engine
     this->engine = createIrrKlangDevice();
     if (!this->engine) {
@@ -59,6 +61,15 @@ public:
     return args.This();
   }
 
+  static Handle<Value> SetVolume(const Arguments& args)
+  {
+    HandleScope scope;
+    irrKlang* hw = ObjectWrap::Unwrap<irrKlang>(args.This());
+
+    hw->m_volume = (float)args[0]->NumberValue();
+    return Undefined();
+  }
+
   static Handle<Value> Play(const Arguments& args)
   {
     HandleScope scope;
@@ -71,7 +82,11 @@ public:
       return Undefined();
     }
 
-    clip->setVolume(1);
+    if (args.Length() > 1) {
+      clip->setVolume((float)args[1]->NumberValue());
+    } else {
+      clip->setVolume(hw->m_volume);
+    }
 
     return args.This();
   }
